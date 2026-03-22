@@ -1,15 +1,36 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Library myLibrary = new Library();
+        Scanner scanner = new Scanner(System.in);
+        String storageFile = "library_state.ser";
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (true) {
+            System.out.println("\n--- БІБЛІОТЕКА (КБ-21 Нежива Ю.) ---");
+            System.out.println("1. Додати книгу");
+            System.out.println("2. Показати всі книги");
+            System.out.println("3. Видати книгу клієнту");
+            System.out.println("4. Зберегти стан (Серіалізація)");
+            System.out.println("5. Завантажити стан (Десеріалізація)");
+            System.out.println("0. Вихід");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                System.out.print("Назва: "); String title = scanner.nextLine();
+                System.out.print("Автор (Прізвище): "); String author = scanner.nextLine();
+                myLibrary.addBook(new Book(title, new Author(author, "")));
+            } else if (choice == 2) {
+                System.out.println("Список книг:");
+                for (Book b : myLibrary.getBooks()) System.out.println(b);
+            } else if (choice == 4) {
+                myLibrary.saveToFile(storageFile);
+            } else if (choice == 5) {
+                myLibrary = Library.loadFromFile(storageFile);
+                System.out.println("Дані успішно відновлено!");
+            } else if (choice == 0) break;
         }
     }
 }
